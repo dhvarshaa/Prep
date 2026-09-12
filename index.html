@@ -289,7 +289,7 @@
 <div class="wrap">
 
   <header>
-    <p class="kicker">A working plan for Varsha — React/Next.js engineer, 4 yrs in, DSA sharp in C++</p>
+    <p class="kicker" id="quote"></p>
     <h1>Java Roadmap</h1>
 
     <div class="stat-row">
@@ -651,6 +651,28 @@
 
 <script>
 (function(){
+  const QUOTES = [
+    "The expert in anything was once a beginner.",
+    "Code is like humor. When you have to explain it, it's bad.",
+    "First, solve the problem. Then, write the code.",
+    "Experience is the name everyone gives to their mistakes.",
+    "The only way to learn a new programming language is by writing programs in it.",
+    "Don't watch the clock; do what it does. Keep going.",
+    "Progress, not perfection.",
+    "Small steps every day still cross mountains.",
+    "Consistency beats intensity when intensity isn't consistent.",
+    "You don't have to be great to start, but you have to start to be great.",
+    "Every pro was once an amateur who refused to give up.",
+    "Learning Java is a marathon — show up for the next mile.",
+    "Confusion is the beginning of understanding.",
+    "Ship the next checkbox. Momentum compounds.",
+    "Stay curious. Stay stubborn. Stay shipping."
+  ];
+  const quoteEl = document.getElementById('quote');
+  if (quoteEl) {
+    quoteEl.textContent = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  }
+
   const STORAGE_KEY = 'fullstack-roadmap-progress-v1';
   const checkboxes = Array.from(document.querySelectorAll('input.check'));
 

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontend → Fullstack: Java/Spring Boot Roadmap</title>
+<style>
+  :root{
+    --paper:#eef0e9;
+    --ink:#1c2b22;
+    --ink-soft:#4a5c50;
+    --rule:#c7cdbf;
+    --java-accent:#b34700;
+    --spring-accent:#2f6f4e;
+    --card-bg:#ffffff;
+    --done-bg:#e3ecdf;
+    --track-w:820px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family: 'Iowan Old Style','Palatino Linotype', Georgia, 'Times New Roman', serif;
+    line-height:1.5;
+    padding:0 20px 80px;
+  }
+
+  .wrap{max-width:var(--track-w); margin:0 auto;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    padding:56px 0 28px;
+    border-bottom:2px solid var(--ink);
+  }
+  .kicker{
+    font-family: Georgia, serif;
+    font-style:italic;
+    color:var(--ink-soft);
+    font-size:15px;
+    margin:0 0 6px;
+  }
+  h1{
+    font-size:clamp(30px,5vw,44px);
+    margin:0 0 14px;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    max-width:14ch;
+  }
+  .lede{
+    font-size:17px;
+    color:var(--ink-soft);
+    max-width:62ch;
+    margin:0 0 22px;
+  }
+  .stat-row{
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    align-items:baseline;
+    margin-top:18px;
+  }
+  .stat{ }
+  .stat .num{
+    font-size:30px;
+    font-weight:600;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat .label{
+    font-size:13px;
+    color:var(--ink-soft);
+    display:block;
+  }
+  .progress-outer{
+    margin-top:22px;
+    height:10px;
+    background:#dfe3d6;
+    border:1px solid var(--ink);
+  }
+  .progress-inner{
+    height:100%;
+    width:0%;
+    background: linear-gradient(90deg, var(--java-accent), var(--spring-accent));
+    transition:width .4s ease;
+  }
+
+  .toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:14px;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .toolbar button{
+    font-family:inherit;
+    background:none;
+    border:1px solid var(--ink-soft);
+    color:var(--ink);
+    padding:6px 12px;
+    cursor:pointer;
+    font-size:13px;
+  }
+  .toolbar button:hover{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .save-note{font-style:italic;}
+
+  /* ---------- PHASE STRUCTURE ---------- */
+  .phase{
+    margin-top:52px;
+  }
+  .phase-head{
+    display:flex;
+    align-items:baseline;
+    gap:16px;
+    border-bottom:1px solid var(--rule);
+    padding-bottom:10px;
+    margin-bottom:6px;
+  }
+  .phase-num{
+    font-size:14px;
+    color:var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    white-space:nowrap;
+  }
+  .phase-title{
+    font-size:24px;
+    font-weight:600;
+    margin:0;
+  }
+  .phase-meta{
+    margin:0 0 24px;
+    font-size:14px;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+
+  .topic{
+    margin-bottom:30px;
+  }
+  .topic-title{
+    font-size:16px;
+    font-weight:600;
+    margin:0 0 4px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .topic-bar-outer{
+    height:4px;
+    background:#dfe3d6;
+    flex:1;
+    max-width:120px;
+  }
+  .topic-bar-inner{
+    height:100%;
+    background:var(--spring-accent);
+    width:0%;
+  }
+  .topic-count{
+    font-size:12px;
+    color:var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    font-weight:400;
+  }
+
+  ul.items{
+    list-style:none;
+    margin:10px 0 0;
+    padding:0;
+    border-left:2px solid var(--rule);
+  }
+  ul.items li{
+    position:relative;
+  }
+  label.item{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    padding:9px 14px 9px 18px;
+    cursor:pointer;
+    font-size:15px;
+    transition:background .15s ease;
+  }
+  label.item:hover{background:rgba(0,0,0,0.03);}
+  input.check{
+    appearance:none;
+    -webkit-appearance:none;
+    width:17px;
+    height:17px;
+    min-width:17px;
+    border:1.5px solid var(--ink-soft);
+    margin-top:3px;
+    cursor:pointer;
+    position:relative;
+    background:var(--card-bg);
+  }
+  input.check:checked{
+    background:var(--spring-accent);
+    border-color:var(--spring-accent);
+  }
+  input.check:checked::after{
+    content:"";
+    position:absolute;
+    left:4px; top:0px;
+    width:5px; height:9px;
+    border:solid white;
+    border-width:0 2px 2px 0;
+    transform:rotate(45deg);
+  }
+  .item-text{flex:1;}
+  .item-text .t{display:block;}
+  .item-text .d{
+    display:block;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:2px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  li.done label.item .t{
+    color:var(--ink-soft);
+    text-decoration:line-through;
+    text-decoration-color:var(--rule);
+  }
+  li.done{background:var(--done-bg);}
+
+  .why{
+    background:var(--card-bg);
+    border:1px solid var(--rule);
+    border-left:3px solid var(--java-accent);
+    padding:12px 16px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    margin-bottom:18px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  .why b{color:var(--ink); font-weight:600;}
+
+  /* ---------- WEEKLY RHYTHM CALLOUT ---------- */
+  .rhythm{
+    margin-top:60px;
+    padding:26px 28px;
+    background:var(--ink);
+    color:var(--paper);
+  }
+  .rhythm h2{
+    margin:0 0 6px;
+    font-size:20px;
+  }
+  .rhythm p{
+    margin:0 0 14px;
+    color:#c9d2c1;
+    font-size:14.5px;
+    max-width:60ch;
+  }
+  .rhythm-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:14px;
+    margin-top:16px;
+  }
+  .rhythm-card{
+    border:1px solid #445245;
+    padding:12px 14px;
+  }
+  .rhythm-card .d{font-size:12px; color:#9fae94; text-transform:uppercase; letter-spacing:0.03em;}
+  .rhythm-card .v{font-size:14px; margin-top:4px;}
+
+  footer{
+    margin-top:60px;
+    padding-top:20px;
+    border-top:1px solid var(--rule);
+    font-size:13px;
+    color:var(--ink-soft);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  @media (max-width:600px){
+    .phase-head{flex-direction:column; gap:2px;}
+    .stat-row{gap:20px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="kicker">A working plan for Varsha — React/Next.js engineer, 4 yrs in, DSA sharp in C++</p>
+    <h1>From Frontend to Fullstack</h1>
+    <p class="lede">
+      A Java + Spring Boot track built around a 9–5 job: sequenced so each topic leans on something
+      you already know, checkable so progress is visible on the days motivation isn't.
+    </p>
+
+    <div class="stat-row">
+      <div class="stat">
+        <span class="num" id="stat-done">0</span>
+        <span class="label">items checked</span>
+      </div>
+      <div class="stat">
+        <span class="num" id="stat-total">0</span>
+        <span class="label">total items</span>
+      </div>
+      <div class="stat">
+        <span class="num" id="stat-pct">0%</span>
+        <span class="label">complete</span>
+      </div>
+    </div>
+    <div class="progress-outer"><div class="progress-inner" id="progress-bar"></div></div>
+
+    <div class="toolbar">
+      <span class="save-note" id="save-note">Progress saves automatically in this browser.</span>
+      <button id="reset-btn" type="button">Reset all progress</button>
+    </div>
+  </header>
+
+  <!-- ============ PHASE 0 ============ -->
+  <section class="phase" id="phase-0">
+    <div class="phase-head">
+      <span class="phase-num">Phase 0</span>
+      <h2 class="phase-title">Java Fundamentals, Mapped from JS</h2>
+    </div>
+    <p class="phase-meta">~2 weeks · goal: read and write basic Java without translating from JS in your head</p>
+
+    <div class="why"><b>Why start here:</b> you already think in variables, functions, loops, and objects — this phase is a syntax and type-system remap, not a concept dump. Skipping it is the #1 reason JS devs write clunky Java later.</div>
+
+    <div class="topic" data-topic="p0-setup">
+      <h3 class="topic-title">Setup &amp; Tooling <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Install JDK 21 (LTS) and set JAVA_HOME</span><span class="d">Use a version manager (SDKMAN) so switching JDKs later is painless</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Install IntelliJ IDEA Community Edition</span><span class="d">The de facto Java IDE — autocomplete and error-checking do a lot of the learning for you</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Install Maven (or use IntelliJ's bundled Maven)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Write and run "Hello World" from the command line, then from IntelliJ</span><span class="d">Understand javac vs java, and what a .class file is</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p0-syntax">
+      <h3 class="topic-title">Core Syntax &amp; Types <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Static typing: primitives (int, double, boolean, char) vs objects</span><span class="d">Contrast with JS's dynamic typing — this is the single biggest mental shift</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Variable declaration, `final`, and type inference with `var`</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Operators, control flow (if/else, switch, loops)</span><span class="d">Nearly identical to C++/JS — quick review</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Arrays vs ArrayList</span><span class="d">Fixed-size arrays are new if you're used to JS arrays — map this to C++ std::vector instead</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Strings, StringBuilder, and immutability</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Methods: parameters, return types, overloading</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p0-oop">
+      <h3 class="topic-title">Object-Oriented Java <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Classes, constructors, `this`</span><span class="d">Closer to C++ classes than JS prototypal objects</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Access modifiers: public, private, protected, package-private</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Inheritance, `super`, method overriding</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Interfaces and abstract classes — and when to use which</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">`equals()`, `hashCode()`, `toString()` and why they matter</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Enums (much more powerful than JS enums-by-convention)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Records (Java 16+) as a lightweight data-class shorthand</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p0-collections">
+      <h3 class="topic-title">Collections &amp; Generics <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">List, Set, Map and their common implementations (ArrayList, HashSet, HashMap)</span><span class="d">You already know these from C++ STL (vector, set, unordered_map) — mostly a renaming exercise</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Iterating collections: for-each, Iterator</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Generics basics: `List&lt;T&gt;`, writing a simple generic method</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Comparable vs Comparator, sorting collections</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p0-modern">
+      <h3 class="topic-title">Modern Java Idioms <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Lambdas and functional interfaces</span><span class="d">Maps directly onto JS arrow functions — you'll pick this up fast</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Streams API: map, filter, reduce, collect</span><span class="d">Nearly 1:1 with JS array methods (.map/.filter/.reduce)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Optional&lt;T&gt; for null-safety</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Exceptions: checked vs unchecked, try-catch-finally, try-with-resources</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p0-practice">
+      <h3 class="topic-title">Apply It <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Re-solve 15–20 of your old C++ DSA problems in Java</span><span class="d">Fastest way to internalize syntax — logic is already solved, so all focus goes to Java itself</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Build one small CLI tool (e.g. expense splitter, todo list) using only core Java</span><span class="d">No frameworks yet — forces comfort with plain OOP before Spring hides it</span></span></label></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PHASE 1 ============ -->
+  <section class="phase" id="phase-1">
+    <div class="phase-head">
+      <span class="phase-num">Phase 1</span>
+      <h2 class="phase-title">Build &amp; Dependency Tooling</h2>
+    </div>
+    <p class="phase-meta">~3–4 days · goal: never be confused by a pom.xml or a red squiggly dependency error again</p>
+
+    <div class="topic" data-topic="p1-maven">
+      <h3 class="topic-title">Maven <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Understand pom.xml: dependencies, plugins, parent poms</span><span class="d">Direct equivalent of package.json — lean on that mental model</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Dependency scopes (compile, test, provided, runtime)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Build lifecycle: clean, compile, test, package, install</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Standard Maven project structure (src/main/java, src/test/java, resources)</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p1-gradle">
+      <h3 class="topic-title">Gradle (lighter pass) <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Read a build.gradle and recognize what it's doing</span><span class="d">Many companies use Gradle over Maven — recognition is enough for now, not authorship</span></span></label></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PHASE 2 ============ -->
+  <section class="phase" id="phase-2">
+    <div class="phase-head">
+      <span class="phase-num">Phase 2</span>
+      <h2 class="phase-title">Spring Boot Core</h2>
+    </div>
+    <p class="phase-meta">~3 weeks · goal: build and reason about a REST API confidently</p>
+
+    <div class="why"><b>Why this order:</b> IoC/DI first because every other Spring concept (controllers, repositories, services) is just "a bean that Spring wires in for you." Understand that once and the rest reads as configuration, not magic.</div>
+
+    <div class="topic" data-topic="p2-core">
+      <h3 class="topic-title">Spring Core Concepts <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Inversion of Control (IoC) and Dependency Injection — the "why"</span><span class="d">Conceptually similar to how a React app provides context/hooks instead of components reaching for globals</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">The Spring container, beans, and the application context</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">@Component, @Service, @Repository, @Autowired</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Constructor injection vs field injection (and why constructor is preferred)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Spring Boot auto-configuration and starters — what @SpringBootApplication actually does</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">application.properties / application.yml and profiles (dev, test, prod)</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p2-web">
+      <h3 class="topic-title">Building REST APIs <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">@RestController, @RequestMapping, @GetMapping/@PostMapping/etc.</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Path variables, query params, request bodies (@PathVariable, @RequestParam, @RequestBody)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">DTOs and separating API contracts from internal models</span><span class="d">Same instinct as keeping API response shapes separate from internal state in a frontend app</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Validation with `@Valid` and Bean Validation annotations</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Global exception handling with @ControllerAdvice / @ExceptionHandler</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Proper HTTP status codes and ResponseEntity</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Layered architecture: Controller → Service → Repository</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p2-project">
+      <h3 class="topic-title">Apply It <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Build a CRUD REST API (e.g. bookmarks manager or task tracker) — in-memory storage first</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Test all endpoints in Postman/Insomnia and document them</span></span></label></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PHASE 3 ============ -->
+  <section class="phase" id="phase-3">
+    <div class="phase-head">
+      <span class="phase-num">Phase 3</span>
+      <h2 class="phase-title">Data Persistence</h2>
+    </div>
+    <p class="phase-meta">~2–3 weeks · goal: connect Spring Boot to a real database and model relationships correctly</p>
+
+    <div class="topic" data-topic="p3-sql">
+      <h3 class="topic-title">SQL Refresher <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Core SQL: SELECT, JOIN, GROUP BY, subqueries</span><span class="d">Skip if already comfortable — otherwise a focused weekend refresher pays off fast</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Indexes, primary/foreign keys, normalization basics</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p3-jpa">
+      <h3 class="topic-title">Spring Data JPA &amp; Hibernate <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">ORM concepts: entities, @Entity, @Id, @GeneratedValue</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">JpaRepository and derived query methods</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Relationships: @OneToMany, @ManyToOne, @ManyToMany</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Lazy vs eager loading, and the N+1 query problem</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">JPQL and @Query for custom queries</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Transactions and @Transactional</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Database migrations with Flyway or Liquibase</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p3-db">
+      <h3 class="topic-title">Databases <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Set up PostgreSQL locally (or via Docker)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Connect Spring Boot to Postgres, run migrations</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Basics of Redis for caching (optional, high-value later)</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p3-project">
+      <h3 class="topic-title">Apply It <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Migrate your Phase 2 CRUD project from in-memory storage to Postgres</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Add at least one real relationship (e.g. User has many Tasks)</span></span></label></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PHASE 4 ============ -->
+  <section class="phase" id="phase-4">
+    <div class="phase-head">
+      <span class="phase-num">Phase 4</span>
+      <h2 class="phase-title">Security &amp; Auth</h2>
+    </div>
+    <p class="phase-meta">~2 weeks · goal: implement real authentication, not a tutorial toy version</p>
+
+    <div class="topic" data-topic="p4-security">
+      <h3 class="topic-title">Spring Security <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Security filter chain: how a request flows through Spring Security</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Authentication vs authorization</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Password hashing with BCrypt</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">JWT-based authentication (stateless — pairs naturally with a React frontend)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Role-based access control (@PreAuthorize, method security)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">CORS configuration for a separate frontend origin</span><span class="d">You've hit CORS from the browser side — now you'll configure it from the server side</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">OAuth2 / "Sign in with Google" basics (optional but common)</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p4-project">
+      <h3 class="topic-title">Apply It <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Add signup/login with JWT to your CRUD project</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Lock down endpoints so users only see their own data</span></span></label></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PHASE 5 ============ -->
+  <section class="phase" id="phase-5">
+    <div class="phase-head">
+      <span class="phase-num">Phase 5</span>
+      <h2 class="phase-title">Testing &amp; Quality</h2>
+    </div>
+    <p class="phase-meta">~1–2 weeks · goal: write tests that would pass code review at a product company</p>
+
+    <div class="topic" data-topic="p5-testing">
+      <h3 class="topic-title">Testing in Java <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">JUnit 5 basics: @Test, assertions, lifecycle annotations</span><span class="d">Same purpose as Jest — different API surface</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Mockito for mocking dependencies</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Unit testing services and controllers</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">@SpringBootTest and @WebMvcTest for integration tests</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Testing with an in-memory or Testcontainers database</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p5-project">
+      <h3 class="topic-title">Apply It <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Write unit + integration tests for your CRUD project, aim for meaningful coverage on services</span></span></label></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PHASE 6 ============ -->
+  <section class="phase" id="phase-6">
+    <div class="phase-head">
+      <span class="phase-num">Phase 6</span>
+      <h2 class="phase-title">Fullstack Integration</h2>
+    </div>
+    <p class="phase-meta">~1–2 weeks · goal: your real strength — wire your React/Next.js frontend to your own Spring backend</p>
+
+    <div class="why"><b>Why this matters most for you:</b> this is where your frontend depth becomes a genuine advantage over backend-only candidates — you can build and reason about both sides of the contract.</div>
+
+    <div class="topic" data-topic="p6-integration">
+      <h3 class="topic-title">Connecting Frontend &amp; Backend <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">API design conventions: REST resource naming, pagination, filtering</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Environment-based config for calling different backend URLs (dev/prod)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Handling JWT auth from the frontend (storage, refresh, attaching headers)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">File uploads end-to-end (multipart requests)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Basic WebSocket usage for real-time features (optional)</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p6-project">
+      <h3 class="topic-title">Apply It — The Capstone <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Rebuild your CRUD project's UI in Next.js, calling your own Spring Boot API</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Deploy backend (Render/Railway) and frontend (Vercel) so it's a live, linkable project</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Write a README explaining architecture decisions — this becomes your interview talking point</span></span></label></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PHASE 7 ============ -->
+  <section class="phase" id="phase-7">
+    <div class="phase-head">
+      <span class="phase-num">Phase 7</span>
+      <h2 class="phase-title">DevOps, System Design &amp; Interview Readiness</h2>
+    </div>
+    <p class="phase-meta">Ongoing, ~2–3 weeks focused · goal: talk credibly about deployment and scale, and pass fullstack interview rounds</p>
+
+    <div class="topic" data-topic="p7-devops">
+      <h3 class="topic-title">Containers &amp; CI Basics <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Docker fundamentals: images, containers, Dockerfile</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Dockerize your Spring Boot app</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">docker-compose for running app + database together locally</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Basic CI with GitHub Actions (run tests on push)</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p7-systemdesign">
+      <h3 class="topic-title">System Design Basics <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Load balancing, caching, and horizontal vs vertical scaling — concepts</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Designing a REST API for a real system (e.g. URL shortener, booking system)</span><span class="d">Travel-domain scenarios play directly to your MakeMyTrip background — use them as practice cases</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Database scaling basics: read replicas, sharding (awareness level)</span></span></label></li>
+      </ul>
+    </div>
+
+    <div class="topic" data-topic="p7-interview">
+      <h3 class="topic-title">Interview Prep <span class="topic-bar-outer"><span class="topic-bar-inner"></span></span> <span class="topic-count"></span></h3>
+      <ul class="items">
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Port 10–15 of your strongest DSA solutions to Java for fluency under pressure</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Prepare answers on Java memory model, garbage collection (conceptual level)</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Prepare to walk through your capstone project end-to-end, including trade-offs</span></span></label></li>
+        <li><label class="item"><input type="checkbox" class="check"><span class="item-text"><span class="t">Mock interview: one backend-focused, one fullstack system design</span></span></label></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="rhythm">
+    <h2>Fitting this around a 9–5</h2>
+    <p>This roadmap assumes roughly 8–10 focused hours a week. Consistency beats intensity — three steady weekday sessions plus one longer weekend block will outperform sporadic weekend cramming.</p>
+    <div class="rhythm-grid">
+      <div class="rhythm-card"><div class="d">Weekdays</div><div class="v">45–60 min, concept + 1 small drill</div></div>
+      <div class="rhythm-card"><div class="d">Weekend block</div><div class="v">3–4 hrs, project work</div></div>
+      <div class="rhythm-card"><div class="d">Cadence</div><div class="v">One phase every 2–3 weeks</div></div>
+      <div class="rhythm-card"><div class="d">Total runway</div><div class="v">~4–5 months to job-ready</div></div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Checkboxes save to this browser's localStorage — same device, same browser.</span>
+    <span id="last-updated"></span>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'fullstack-roadmap-progress-v1';
+  const checkboxes = Array.from(document.querySelectorAll('input.check'));
+
+  // Assign a stable id to each checkbox based on its position in the DOM (topic + index)
+  checkboxes.forEach((cb, i) => {
+    const topicEl = cb.closest('.topic');
+    const topicId = topicEl ? topicEl.dataset.topic : 'misc';
+    cb.dataset.id = topicId + '-' + i;
+  });
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){
+      console.warn('Could not read saved progress', e);
+      return {};
+    }
+  }
+
+  function saveState(state){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      const note = document.getElementById('save-note');
+      const now = new Date();
+      note.textContent = 'Saved at ' + now.toLocaleTimeString();
+    }catch(e){
+      console.warn('Could not save progress', e);
+      const note = document.getElementById('save-note');
+      note.textContent = 'Could not save — storage unavailable.';
+    }
+  }
+
+  function getState(){
+    const state = {};
+    checkboxes.forEach(cb => { state[cb.dataset.id] = cb.checked; });
+    return state;
+  }
+
+  function applyState(state){
+    checkboxes.forEach(cb => {
+      cb.checked = !!state[cb.dataset.id];
+      cb.closest('li').classList.toggle('done', cb.checked);
+    });
+  }
+
+  function updateTopicBars(){
+    document.querySelectorAll('.topic').forEach(topic => {
+      const items = Array.from(topic.querySelectorAll('input.check'));
+      const done = items.filter(cb => cb.checked).length;
+      const total = items.length;
+      const pct = total ? Math.round((done/total)*100) : 0;
+      const bar = topic.querySelector('.topic-bar-inner');
+      const count = topic.querySelector('.topic-count');
+      if(bar) bar.style.width = pct + '%';
+      if(count) count.textContent = done + ' / ' + total;
+    });
+  }
+
+  function updateGlobalStats(){
+    const total = checkboxes.length;
+    const done = checkboxes.filter(cb => cb.checked).length;
+    const pct = total ? Math.round((done/total)*100) : 0;
+    document.getElementById('stat-done').textContent = done;
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-pct').textContent = pct + '%';
+    document.getElementById('progress-bar').style.width = pct + '%';
+  }
+
+  function refreshAll(){
+    updateTopicBars();
+    updateGlobalStats();
+  }
+
+  // init
+  const initialState = loadState();
+  applyState(initialState);
+  refreshAll();
+
+  const lastUpdatedRaw = localStorage.getItem(STORAGE_KEY + '-ts');
+  if(lastUpdatedRaw){
+    document.getElementById('last-updated').textContent = 'Last saved ' + new Date(Number(lastUpdatedRaw)).toLocaleString();
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      cb.closest('li').classList.toggle('done', cb.checked);
+      const state = getState();
+      saveState(state);
+      localStorage.setItem(STORAGE_KEY + '-ts', Date.now().toString());
+      document.getElementById('last-updated').textContent = 'Last saved ' + new Date().toLocaleString();
+      refreshAll();
+    });
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    if(confirm('Reset all checked progress? This cannot be undone.')){
+      checkboxes.forEach(cb => {
+        cb.checked = false;
+        cb.closest('li').classList.remove('done');
+      });
+      saveState({});
+      localStorage.removeItem(STORAGE_KEY + '-ts');
+      document.getElementById('last-updated').textContent = '';
+      refreshAll();
+    }
+  });
+})();
+</script>
+</body>
+</html>
